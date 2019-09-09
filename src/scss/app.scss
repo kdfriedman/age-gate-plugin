@@ -1,1 +1,183 @@
 @import "~bootstrap/scss/bootstrap";
+// @include media-breakpoint-down(md) 
+// @include media-breakpoint-down(lg) 
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: #0a0a0a;
+}
+
+h1 {
+    font-family: 'Bungee', cursive;
+    color:white;
+}
+
+p {
+    font-family: 'Lato', sans-serif;
+    color:white;
+    font-size: 1.5rem;
+}
+
+#welcome-message {
+    margin-top: 2rem;
+}
+
+.hero-img {
+    background: url("/../../images/hero-bg-gradient.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    max-height: 1200px;
+    height: 37rem;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #0a0a0a;
+    z-index:9999;
+}
+
+.company-name {
+    font-family: 'Bungee', cursive;
+    font-size:1rem;
+}
+
+.company-address {
+    font-family: 'Bungee', cursive;
+    font-size:1rem;
+}
+
+/* Modal Styling */
+
+#modal-wrapper {
+    max-width: 660px;
+    background: linear-gradient(-135deg, #070046, #007db9, #070046) !important;
+    border-radius: 5px;
+    background: #070046;
+    min-height: 25rem !important;
+    height: 30rem !important;
+}
+
+#modal-wrapper-inner .modal-header {
+    display: block;
+}
+
+#modal-wrapper-inner, .row, div {
+    justify-content: center;
+}
+
+#modal-wrapper-inner {
+    background: transparent;
+    border:none;
+}
+
+#modal-wrapper-inner div {
+    border:none;
+}
+
+#modal-wrapper-inner input {
+    font-size: 1.2rem;
+    background: black;
+    border: 2px solid white;
+    font-family: 'Bungee', cursive;
+    color:white;
+}
+
+#modal-wrapper-inner button {
+    font-size: 1.2rem;
+    background: white;
+    font-family: 'Bungee', cursive;
+    color: black;
+    width: 15rem;
+}
+
+#enter-btn {
+    margin-top: 3rem;
+    margin-bottom: 0rem;
+}
+
+#modal-wrapper-inner p {
+    font-size: 1.4rem;
+    font-family: 'Bungee', cursive;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+}
+
+.modal-backdrop.show {
+    opacity: .8 !important;
+}
+
+.age-submit {
+    width: 100%;
+}
+
+#company-logo-img img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+@include media-breakpoint-down(xs) {
+    h1 {
+        font-family: 'Bungee', cursive;
+        color:white;
+        font-size:1.7rem;
+    }
+
+    p {
+        font-family: 'Lato', sans-serif;
+        color:white;
+        font-size: 1.2rem;
+    } 
+    
+    .company-name {
+        font-family: 'Bungee', cursive;
+        font-size:.8rem;
+    }
+
+    .company-address {
+        font-family: 'Bungee', cursive;
+        font-size:.8rem;
+    }
+
+    #modal-wrapper {
+        max-width: 660px;
+        background: linear-gradient(-135deg, #070046, #007db9, #070046) !important;
+        border-radius: 5px;
+        background: #070046;
+        min-height: 25rem !important;
+        height: 27rem !important;
+    }
+
+    #modal-wrapper-inner input {
+        font-size: .6rem;
+        background: black;
+        border: 2px solid white;
+        font-family: 'Bungee', cursive;
+        color:white;
+    }
+    
+    #modal-wrapper-inner button {
+        font-size: .6rem;
+        background: white;
+        font-family: 'Bungee', cursive;
+        color: black;
+        width: 12rem;
+    }
+    
+    #modal-wrapper-inner p {
+        font-size: 1rem;
+        font-family: 'Bungee', cursive;
+        margin-left: auto;
+        margin-right: auto;
+        text-align:center;
+    }
+}
