@@ -1,6 +1,7 @@
 import 'bootstrap';
 import './scss/app.scss';
 import { ModalComponent } from './views/modal-component';
+import { CookieComponent } from './views/cookie-component';
 import { elementCollectionObject } from './config'; 
 
 class AppComponent {
@@ -11,6 +12,8 @@ class AppComponent {
     init() {
         const modalComponent = new ModalComponent(this.elemCollectionObject);
         modalComponent.initModal();
+
+        const cookieComponent = new CookieComponent(this.elemCollectionObject);
     }
 
 }

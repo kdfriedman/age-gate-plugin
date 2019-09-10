@@ -63,7 +63,7 @@ p {
     border-radius: 5px;
     background: #070046;
     min-height: 25rem !important;
-    height: 30rem !important;
+    height: 32rem !important;
 }
 
 #modal-wrapper-inner .modal-header {
@@ -100,8 +100,15 @@ p {
 }
 
 #enter-btn {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-bottom: 0rem;
+}
+
+#remember-age-checkbox {
+    margin-top:2rem;
+    font-size: 1rem;
+    font-family: 'Bungee', cursive;
+    color:white;    
 }
 
 #modal-wrapper-inner p {
@@ -154,7 +161,7 @@ p {
         border-radius: 5px;
         background: #070046;
         min-height: 25rem !important;
-        height: 27rem !important;
+        height: 30rem !important;
     }
 
     #modal-wrapper-inner input {
@@ -180,4 +187,11 @@ p {
         margin-right: auto;
         text-align:center;
     }
+
+    #remember-age-checkbox {
+        margin-top:2rem;
+        font-size: .8rem;
+        font-family: 'Bungee', cursive;
+        color:white;    
+    }    
 }
