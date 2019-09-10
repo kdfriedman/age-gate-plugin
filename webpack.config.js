@@ -3,11 +3,11 @@ const path = require("path");
 
 module.exports = {
   mode: 'development',
-  entry: "./src/app.component.js",
+  entry: "./src/app-component.js",
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "public/"),
-    filename: "bundle.js"
+    filename: "age-gate.js"
   },
   devServer:{
     contentBase: 'public'
