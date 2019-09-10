@@ -143,6 +143,12 @@ p {
     font-weight: 900;
 }
 
+.under-21-msg {
+    font-family: 'Lato', sans-serif;
+    color:white;
+    font-size: 1.2rem !important;
+}
+
 @include media-breakpoint-down(xs) {
     h1 {
         font-family: 'Bungee', cursive;
@@ -214,5 +220,11 @@ p {
         line-height: 1.3rem;
         text-transform: uppercase;
         font-weight: 900;
+    }
+
+    .under-21-msg {
+        font-family: 'Bungee', cursive;
+        color:white;
+        font-size: 1rem !important;
     }
 }

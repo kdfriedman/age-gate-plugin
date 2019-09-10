@@ -11,12 +11,12 @@ export class ModalComponent {
         this.styleInputErrorMsg = false;
         this.errMsgElement = undefined;
         this.inputValueCounter = false;
+        this.inputCheckBoxState = false;
     }
 
     initModal() {
         this.createModalElement();
         this.ActivateModalElement();
-        this.validateAgeGateUserInput();
     }
 
     ActivateModalElement() {
@@ -26,8 +26,8 @@ export class ModalComponent {
                 backdrop: 'static',
                 keyboard: false
             });
+            this.validateAgeGateUserInput();
         });
-        // $(this.modal).modal('hide'); 
     }
 
     createModalElement() {
@@ -61,14 +61,14 @@ export class ModalComponent {
                         <form>
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" class="form-control text-center" placeholder="MM" minlength="1"
-                                        maxlength="2" min="2" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
+                                    <input type="text" class="form-control text-center" placeholder="MM" minlength="2"
+                                        maxlength="2" min="0" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
                                         name="monthinput" value="" size="2" aria-required="true">
                                 </div>
 
                                 <div class="col">
-                                    <input type="text" class="form-control text-center" placeholder="DD" minlength="1"
-                                        maxlength="2" min="2" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
+                                    <input type="text" class="form-control text-center" placeholder="DD" minlength="2"
+                                        maxlength="2" min="0" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
                                         name="dayinput" value="" size="2" aria-required="true">
                                 </div>
                                 <div class="col">
@@ -110,11 +110,17 @@ export class ModalComponent {
         let dayInput = form[1];
         let yearInput = form[2];
 
+
         // create input group to loop through on submit for handler functions
         let formInputElemGroup = [monthInput, dayInput, yearInput];
 
         // submit button element
         let submitBtn = form.querySelector('button');
+
+        //checkbox input element
+        let checkboxInput = form.querySelector("input[type='checkbox']");
+        //checkbox state
+        this.inputCheckBoxState = checkboxInput.checked;
 
         // validate all inputs
         form.addEventListener('input', e => {
@@ -125,8 +131,21 @@ export class ModalComponent {
                 this.handleInvalidRegExInput(e);
                 return false;
             }
-            this.confirmInputValuesAreSuccessful(monthInput, dayInput, yearInput);            
+            this.confirmInputValuesAreSuccessful(monthInput, dayInput, yearInput);                        
+        });
+
+        //create custom event to pass inputCheckBox state on submit
+        let checkBoxState = new CustomEvent("checkBoxState", {
+            detail: {
+                inputCheckBoxEvent: 'checkBoxState',
+                checkboxInputElement: checkboxInput
+            }
         });        
+
+        checkboxInput.addEventListener('change', e => {
+            // dispatch event from body element
+            this._body.dispatchEvent(checkBoxState); 
+        });       
 
         // handle form submit
         // validate inputs, test against RegEx, and run callback function
@@ -145,9 +164,71 @@ export class ModalComponent {
                 this.handleSubmissionForMissingValues(formInputElemGroup);
                 return false; 
             }
+            this.handleCompletedBirthdayInput(monthInput.value, dayInput.value, yearInput.value, checkBoxState,checkboxInput);
+        });
+    }
+
+    handleCompletedBirthdayInput(monthInput, dayInput, yearInput, inputCheckBoxState,checkboxInputElem) {
+       
+        
+        // input birthday into date object for format validation 
+        let dob = new Date(yearInput, monthInput, dayInput);
+        let differenceInMS = Date.now() - dob.getTime();
+        // age that's been updated based on difference
+        let age_dt = new Date(differenceInMS); 
+        let ageStatus = Math.abs(age_dt.getUTCFullYear() - 1970);
+
+        // setup custom event to notity storage component of successful input
+        let ageValidationInput = new CustomEvent("ageValidationInput", {
+            detail: {
+                ageValidationInputMessage: 'age validation input status',
+                checkboxInputElement: checkboxInputElem,
+                age:ageStatus
+            }
+        }); 
+
+        // check if age is under 21 years of age
+        if (Math.abs(age_dt.getUTCFullYear() - 1970) < 21) {
+            // dispatch event from body element
+            this._body.dispatchEvent(inputCheckBoxState);
+            
+            // dispatch event from body element
+            this._body.dispatchEvent(ageValidationInput); 
+
+            //TODO: create custom event for submit to check for over/under 21
+            this.handleUnder21YearsOfAgeInput();
+            console.log('less than 21');
+            return false;
+        }
+
+        // check if user is over 21 years of age
+        if (Math.abs(age_dt.getUTCFullYear() - 1970) >= 21) {
+
             //hide modal on successful form validation 
             $(this.modal).modal('hide');
-        });
+
+            // dispatch event from body element
+            this._body.dispatchEvent(inputCheckBoxState);
+
+            // dispatch event from body element
+            this._body.dispatchEvent(ageValidationInput); 
+        }
+    }
+
+    handleUnder21YearsOfAgeInput() {
+        //display message to under21 user input
+        let modalNodeList = this.modal.querySelectorAll('div');
+        let consolidatedNodeList = [];
+        for (let node of modalNodeList) {
+            if (node.className.includes('row')) {
+                consolidatedNodeList.push(node);
+            }
+        }
+        // replace 'enter birthday' text with under21 message
+        consolidatedNodeList[1].innerHTML = `<p class="under-21-msg">Woah, slow down there. You must be of legal drinking age to enter our site.</p>`;
+        consolidatedNodeList[2].innerHTML = '';
+        consolidatedNodeList[3].innerHTML = '';
+        consolidatedNodeList[4].innerHTML = '';
     }
 
     handleInvalidRegExInput(e) {
