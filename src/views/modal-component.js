@@ -142,6 +142,7 @@ export class ModalComponent {
             }
             //check if input counter is true or equal to 3 completed inputs
             if (!this.inputValueCounter) {
+                this.handleSubmissionForMissingValues(formInputElemGroup);
                 return false; 
             }
             //hide modal on successful form validation 
@@ -163,6 +164,21 @@ export class ModalComponent {
         // create err message element to notify user that they should reformat their input
         this.errMsgElement = document.createElement('div');
         this.errMsgElement.innerHTML = 'Please enter a valid month, day and year';
+        this.errMsgElement.classList.add('err-msg');
+
+        // append err message element to parent element
+        formInputElementGroup[0].parentElement.appendChild(this.errMsgElement);
+    }
+
+    handleSubmissionForMissingValues(formInputElementGroup) {
+        formInputElementGroup.forEach(input => {
+            // alert user with red outline that their input is incorrect
+            input.style.border = '2px solid red';
+            this.styleInputErrorMsg = true;
+        })
+        // create err message element to notify user that they should reformat their input
+        this.errMsgElement = document.createElement('div');
+        this.errMsgElement.innerHTML = 'Please enter a valid date';
         this.errMsgElement.classList.add('err-msg');
 
         // append err message element to parent element
