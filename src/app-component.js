@@ -22,14 +22,15 @@ class AppComponent {
 
         // wait till DOM has fully loaded to check for cookieState
         document.addEventListener('DOMContentLoaded', e => {
-            if (storageComponent.cookieState) {
+            if (storageComponent.cookieState === 'over') {
                 //remove modal
                 $(modalComponent.modal).removeClass("in");
                 $(".modal-backdrop").remove();
                 $(modalComponent.modal).hide();
             }
-            if (!storageComponent.cookieState) {
+            if (storageComponent.cookieState === 'under') {
                 console.log('under age');
+                modalComponent.handleUnder21YearsOfAgeInput();
             }
         });
     }
