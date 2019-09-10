@@ -134,15 +134,17 @@ export class ModalComponent {
             this.confirmInputValuesAreSuccessful(monthInput, dayInput, yearInput);                        
         });
 
-        // setup custom event to notity storage component of successful submission
+        //create custom event to pass inputCheckBox state on submit
+        let checkBoxState = new CustomEvent("checkBoxState", {
+            detail: {
+                inputCheckBoxEvent: 'checkBoxState',
+                checkboxInputElement: checkboxInput
+            }
+        });        
+
         checkboxInput.addEventListener('change', e => {
-            let ageValidationInput = new CustomEvent("ageValidationInput", {
-                detail: {
-                    checkboxInputElement: checkboxInput
-                }
-            });
             // dispatch event from body element
-            this._body.dispatchEvent(ageValidationInput); 
+            this._body.dispatchEvent(checkBoxState); 
         });       
 
         // handle form submit
@@ -162,30 +164,36 @@ export class ModalComponent {
                 this.handleSubmissionForMissingValues(formInputElemGroup);
                 return false; 
             }
-
-            //create custom event to pass inputCheckBox state on submit
-            let checkBoxState = new CustomEvent("checkBoxState", {
-                detail: {
-                    inputCheckBoxState: this.inputCheckBoxState
-                }
-            });
-            // dispatch event from body element
-            this._body.dispatchEvent(checkBoxState);
-
-            this.inputCheckBoxStatus = checkboxInput.checked;
-            this.handleCompletedBirthdayInput(monthInput.value, dayInput.value, yearInput.value);
+            this.handleCompletedBirthdayInput(monthInput.value, dayInput.value, yearInput.value, checkBoxState,checkboxInput);
         });
     }
 
-    handleCompletedBirthdayInput(monthInput, dayInput, yearInput) {
+    handleCompletedBirthdayInput(monthInput, dayInput, yearInput, inputCheckBoxState,checkboxInputElem) {
+       
+        
         // input birthday into date object for format validation 
         let dob = new Date(yearInput, monthInput, dayInput);
         let differenceInMS = Date.now() - dob.getTime();
         // age that's been updated based on difference
         let age_dt = new Date(differenceInMS); 
+        let ageStatus = Math.abs(age_dt.getUTCFullYear() - 1970);
+
+        // setup custom event to notity storage component of successful input
+        let ageValidationInput = new CustomEvent("ageValidationInput", {
+            detail: {
+                ageValidationInputMessage: 'age validation input status',
+                checkboxInputElement: checkboxInputElem,
+                age:ageStatus
+            }
+        }); 
 
         // check if age is under 21 years of age
         if (Math.abs(age_dt.getUTCFullYear() - 1970) < 21) {
+            // dispatch event from body element
+            this._body.dispatchEvent(inputCheckBoxState);
+            
+            // dispatch event from body element
+            this._body.dispatchEvent(ageValidationInput); 
 
             //TODO: create custom event for submit to check for over/under 21
             this.handleUnder21YearsOfAgeInput();
@@ -193,22 +201,17 @@ export class ModalComponent {
             return false;
         }
 
+        // check if user is over 21 years of age
         if (Math.abs(age_dt.getUTCFullYear() - 1970) >= 21) {
-            //TODO: extend class and write cookie handler
+
             //hide modal on successful form validation 
             $(this.modal).modal('hide');
 
-            //TODO: create custom event for submit to check for over/under 21
-            // setup custom event to notity storage component of successful submission
-            checkboxInput.addEventListener('change', e => {
-                let ageValidationInput = new CustomEvent("ageValidationInput", {
-                    detail: {
-                        checkboxInputElement: checkboxInput
-                    }
-                });
-                // dispatch event from body element
-                this._body.dispatchEvent(ageValidationInput); 
-            }); 
+            // dispatch event from body element
+            this._body.dispatchEvent(inputCheckBoxState);
+
+            // dispatch event from body element
+            this._body.dispatchEvent(ageValidationInput); 
         }
     }
 
