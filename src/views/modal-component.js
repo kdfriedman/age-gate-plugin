@@ -27,7 +27,6 @@ export class ModalComponent {
                 keyboard: false
             });
         });
-        // $(this.modal).modal('hide'); 
     }
 
     createModalElement() {
@@ -61,14 +60,14 @@ export class ModalComponent {
                         <form>
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" class="form-control text-center" placeholder="MM" minlength="1"
-                                        maxlength="2" min="2" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
+                                    <input type="text" class="form-control text-center" placeholder="MM" minlength="2"
+                                        maxlength="2" min="0" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
                                         name="monthinput" value="" size="2" aria-required="true">
                                 </div>
 
                                 <div class="col">
-                                    <input type="text" class="form-control text-center" placeholder="DD" minlength="1"
-                                        maxlength="2" min="2" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
+                                    <input type="text" class="form-control text-center" placeholder="DD" minlength="2"
+                                        maxlength="2" min="0" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
                                         name="dayinput" value="" size="2" aria-required="true">
                                 </div>
                                 <div class="col">
@@ -145,9 +144,46 @@ export class ModalComponent {
                 this.handleSubmissionForMissingValues(formInputElemGroup);
                 return false; 
             }
+            this.handleCompletedBirthdayInput(monthInput.value, dayInput.value, yearInput.value);
+            
+        });
+    }
+
+    handleCompletedBirthdayInput(monthInput, dayInput, yearInput) {
+        // input birthday into date object for format validation 
+        let dob = new Date(yearInput, monthInput, dayInput);
+        let differenceInMS = Date.now() - dob.getTime();
+        // age that's been updated based on difference
+        let age_dt = new Date(differenceInMS); 
+
+        // check if age is under 21 years of age
+        if (Math.abs(age_dt.getUTCFullYear() - 1970) < 21) {
+            this.handleUnder21YearsOfAgeInput();
+            console.log('less than 21');
+            return false;
+        }
+
+        if (Math.abs(age_dt.getUTCFullYear() - 1970) >= 21) {
+            //TODO: extend class and write cookie handler
             //hide modal on successful form validation 
             $(this.modal).modal('hide');
-        });
+        }
+    }
+
+    handleUnder21YearsOfAgeInput() {
+        //display message to under21 user input
+        let modalNodeList = this.modal.querySelectorAll('div');
+        let consolidatedNodeList = [];
+        for (let node of modalNodeList) {
+            if (node.className.includes('row')) {
+                consolidatedNodeList.push(node);
+            }
+        }
+        // replace 'enter birthday' text with under21 message
+        consolidatedNodeList[1].innerHTML = `<p class="under-21-msg">Woah, slow down there. You must be of legal drinking age to enter our site.</p>`;
+        consolidatedNodeList[2].innerHTML = '';
+        consolidatedNodeList[3].innerHTML = '';
+        consolidatedNodeList[4].innerHTML = '';
     }
 
     handleInvalidRegExInput(e) {
