@@ -5,8 +5,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server --inline --hot",
-    "deploy": "gh-pages -d build"
+    "start": "webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",
