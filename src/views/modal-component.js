@@ -62,13 +62,13 @@ export class ModalComponent {
                             <div class="row">
                                 <div class="col">
                                     <input type="text" class="form-control text-center" placeholder="MM" minlength="1"
-                                        maxlength="2" min="1" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
+                                        maxlength="2" min="2" max="12" pattern="^[0-9]*$" tabindex="1" id="month-input"
                                         name="monthinput" value="" size="2" aria-required="true">
                                 </div>
 
                                 <div class="col">
                                     <input type="text" class="form-control text-center" placeholder="DD" minlength="1"
-                                        maxlength="2" min="1" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
+                                        maxlength="2" min="2" max="31" pattern="^[0-9]*$" tabindex="2" id="day-input"
                                         name="dayinput" value="" size="2" aria-required="true">
                                 </div>
                                 <div class="col">
@@ -110,6 +110,9 @@ export class ModalComponent {
         let dayInput = form[1];
         let yearInput = form[2];
 
+        // create input group to loop through on submit for handler functions
+        let formInputElemGroup = [monthInput, dayInput, yearInput];
+
         // submit button element
         let submitBtn = form.querySelector('button');
 
@@ -133,6 +136,10 @@ export class ModalComponent {
             if (this.styleInputErrorMsg) {
                 return false;
             }
+            if (monthInput.value === '' || dayInput.value === ''  || yearInput.value === '') {
+                this.handleSubmissionForEmptyInputs(formInputElemGroup);
+                return false;
+            }
             //check if input counter is true or equal to 3 completed inputs
             if (!this.inputValueCounter) {
                 return false; 
@@ -147,14 +154,25 @@ export class ModalComponent {
         e.preventDefault();
     }
 
+    handleSubmissionForEmptyInputs(formInputElementGroup) {
+        formInputElementGroup.forEach(input => {
+            // alert user with red outline that their input is incorrect
+            input.style.border = '2px solid red';
+            this.styleInputErrorMsg = true;
+        })
+        // create err message element to notify user that they should reformat their input
+        this.errMsgElement = document.createElement('div');
+        this.errMsgElement.innerHTML = 'Please enter a valid month, day and year';
+        this.errMsgElement.classList.add('err-msg');
+
+        // append err message element to parent element
+        formInputElementGroup[0].parentElement.appendChild(this.errMsgElement);
+    }
+
     confirmInputValuesAreSuccessful(inputMonth, inputDay, inputYear) {
         //input counter to confirm input is fully 
         let inputSuccessCounter = 0;
-
         let inputElementGroup = [inputMonth, inputDay, inputYear];
-
-        //check maxlength attribute on element and convert value to integer
-        let inputMonthInputValueTest = parseInt(inputMonth.getAttribute('maxlength'));
 
         // loop through each input and test if input.value is equal to maxlength attr
         for (let i = 0; i < inputElementGroup.length; i++) {
@@ -172,7 +190,6 @@ export class ModalComponent {
     }
 
     validateInputValuesForRegEx(inputElementList) {
-        this.inputValueCounter = true;
         let inputValueCounter = 0;
         for (let i = 0; i < inputElementList.length; i++) {
             if (inputElementList[i].value <= parseInt(inputElementList[i].getAttribute('max')) && 
@@ -184,6 +201,10 @@ export class ModalComponent {
             this.styleInputErrorMessage(inputElementList);
             return false;
         }
+
+        inputValueCounter === 3 ? this.inputValueCounter = true 
+        : this.inputValueCounter = false;
+
     }
 
     styleInputErrorMessage(inputElemGroup) {
@@ -204,6 +225,7 @@ export class ModalComponent {
     clearStyleInputErrorMessage(inputElemGroup) {
         this.errMsgElement.innerHTML = '';
         this.errMsgElement.classList.remove('err-msg');
+        this.inputValueCounter = false;
 
         inputElemGroup.forEach(input => {
             input.style.border = '2px solid white';
