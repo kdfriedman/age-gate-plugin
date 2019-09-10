@@ -11,12 +11,12 @@ export class ModalComponent {
         this.styleInputErrorMsg = false;
         this.errMsgElement = undefined;
         this.inputValueCounter = false;
+        this.inputCheckBoxState = false;
     }
 
     initModal() {
         this.createModalElement();
         this.ActivateModalElement();
-        this.validateAgeGateUserInput();
     }
 
     ActivateModalElement() {
@@ -26,6 +26,7 @@ export class ModalComponent {
                 backdrop: 'static',
                 keyboard: false
             });
+            this.validateAgeGateUserInput();
         });
     }
 
@@ -109,11 +110,17 @@ export class ModalComponent {
         let dayInput = form[1];
         let yearInput = form[2];
 
+
         // create input group to loop through on submit for handler functions
         let formInputElemGroup = [monthInput, dayInput, yearInput];
 
         // submit button element
         let submitBtn = form.querySelector('button');
+
+        //checkbox input element
+        let checkboxInput = form.querySelector("input[type='checkbox']");
+        //checkbox state
+        this.inputCheckBoxState = checkboxInput.checked;
 
         // validate all inputs
         form.addEventListener('input', e => {
@@ -124,8 +131,19 @@ export class ModalComponent {
                 this.handleInvalidRegExInput(e);
                 return false;
             }
-            this.confirmInputValuesAreSuccessful(monthInput, dayInput, yearInput);            
-        });        
+            this.confirmInputValuesAreSuccessful(monthInput, dayInput, yearInput);                        
+        });
+
+        // setup custom event to notity storage component of successful submission
+        checkboxInput.addEventListener('change', e => {
+            let ageValidationInput = new CustomEvent("ageValidationInput", {
+                detail: {
+                    checkboxInputElement: checkboxInput
+                }
+            });
+            // dispatch event from body element
+            this._body.dispatchEvent(ageValidationInput); 
+        });       
 
         // handle form submit
         // validate inputs, test against RegEx, and run callback function
@@ -144,8 +162,18 @@ export class ModalComponent {
                 this.handleSubmissionForMissingValues(formInputElemGroup);
                 return false; 
             }
+
+            //create custom event to pass inputCheckBox state on submit
+            let checkBoxState = new CustomEvent("checkBoxState", {
+                detail: {
+                    inputCheckBoxState: this.inputCheckBoxState
+                }
+            });
+            // dispatch event from body element
+            this._body.dispatchEvent(checkBoxState);
+
+            this.inputCheckBoxStatus = checkboxInput.checked;
             this.handleCompletedBirthdayInput(monthInput.value, dayInput.value, yearInput.value);
-            
         });
     }
 
@@ -158,6 +186,8 @@ export class ModalComponent {
 
         // check if age is under 21 years of age
         if (Math.abs(age_dt.getUTCFullYear() - 1970) < 21) {
+
+            //TODO: create custom event for submit to check for over/under 21
             this.handleUnder21YearsOfAgeInput();
             console.log('less than 21');
             return false;
@@ -167,6 +197,18 @@ export class ModalComponent {
             //TODO: extend class and write cookie handler
             //hide modal on successful form validation 
             $(this.modal).modal('hide');
+
+            //TODO: create custom event for submit to check for over/under 21
+            // setup custom event to notity storage component of successful submission
+            checkboxInput.addEventListener('change', e => {
+                let ageValidationInput = new CustomEvent("ageValidationInput", {
+                    detail: {
+                        checkboxInputElement: checkboxInput
+                    }
+                });
+                // dispatch event from body element
+                this._body.dispatchEvent(ageValidationInput); 
+            }); 
         }
     }
 

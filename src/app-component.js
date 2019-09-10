@@ -1,7 +1,7 @@
 import 'bootstrap';
 import './scss/app.scss';
 import { ModalComponent } from './views/modal-component';
-import { CookieComponent } from './views/cookie-component';
+import { StorageComponent } from './views/storage-component';
 import { elementCollectionObject } from './config'; 
 
 class AppComponent {
@@ -13,7 +13,8 @@ class AppComponent {
         const modalComponent = new ModalComponent(this.elemCollectionObject);
         modalComponent.initModal();
 
-        const cookieComponent = new CookieComponent(this.elemCollectionObject);
+        const storageComponent = new StorageComponent(this.elemCollectionObject);
+        storageComponent.initStorage();
     }
 
 }
