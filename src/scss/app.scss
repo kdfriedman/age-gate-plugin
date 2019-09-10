@@ -132,6 +132,17 @@ p {
     max-height: 200px;
 }
 
+.err-msg {
+    color: red;
+    font-family: Arial;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    text-align: center;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
 @include media-breakpoint-down(xs) {
     h1 {
         font-family: 'Bungee', cursive;
@@ -193,5 +204,15 @@ p {
         font-size: .8rem;
         font-family: 'Bungee', cursive;
         color:white;    
-    }    
+    }
+    .err-msg {
+        color: red;
+        font-family: Arial;
+        font-size: 1rem;
+        margin-top: 1rem;
+        text-align: center;
+        line-height: 1.3rem;
+        text-transform: uppercase;
+        font-weight: 900;
+    }
 }
