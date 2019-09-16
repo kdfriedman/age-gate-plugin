@@ -1,4 +1,4 @@
 # age-gate-plugin
 Age gate plugin in ES6
 
-Demo: https://cranky-easley-c92ce7.netlify.com/
+Demo: https://age-gate-plugin.netlify.com/
