@@ -1,17 +1,12 @@
-  
 const path = require("path");
 
 module.exports = {
-  mode: 'development',
   entry: "./src/app-component.js",
   output: {
     publicPath: "/",
-    path: path.resolve(__dirname, "public/"),
+    path: path.resolve(__dirname, "public"),
     filename: "age-gate.js"
   },
-  devServer:{
-    contentBase: 'public'
-},
   module: {
     rules: [
       {
@@ -29,8 +24,7 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            // Adds CSS to the DOM by injecting a `<style>` tag
-            loader: 'style-loader'
+            loader: 'style-loader'  
           },
           {
             // Interprets `@import` and `url()` like `import/require()` and will resolve them
@@ -54,5 +48,5 @@ module.exports = {
         ]
       }
     ]
-  }
-};
+  },
+}; 
