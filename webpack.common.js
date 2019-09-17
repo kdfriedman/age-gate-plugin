@@ -1,6 +1,4 @@
 const path = require("path");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: "./src/app-component.js",
@@ -9,14 +7,6 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
     filename: "age-gate.js"
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    }),
-  ],
   module: {
     rules: [
       {
@@ -34,7 +24,7 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader'  
           },
           {
             // Interprets `@import` and `url()` like `import/require()` and will resolve them

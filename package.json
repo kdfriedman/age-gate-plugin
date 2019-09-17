@@ -4,7 +4,7 @@
   "main": "app.component.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack --open --config webpack.dev.js"
+    "start": "webpack-dev-server --open --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
