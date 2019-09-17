@@ -16,14 +16,6 @@ module.exports = merge(common, {
 			}
 		}
   },
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/,
-        sideEffects: true,
-      },
-    ]
-  },
   plugins: [
     new CompressionPlugin({
       filename: '[path].br[query]',
