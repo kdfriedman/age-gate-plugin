@@ -15,7 +15,7 @@ module.exports = merge(common, {
 				}
 			}
 		}
-	},
+  },
   plugins: [
     new CompressionPlugin({
       filename: '[path].br[query]',
