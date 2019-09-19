@@ -1,12 +1,25 @@
 const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: "./src/app-component.js",
   output: {
     publicPath: "/",
-    path: path.resolve(__dirname, "public"),
+    path: path.resolve(__dirname, './public'),
     filename: "age-gate.js"
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      hash:true,
+      template: './src/index.html',
+      filename: 'index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+],
   module: {
     rules: [
       {
@@ -24,7 +37,7 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            loader: 'style-loader'  
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             // Interprets `@import` and `url()` like `import/require()` and will resolve them
