@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.component.js",
   "scripts": {
-    "build": "webpack-dev-server --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --open --config webpack.dev.js"
   },
   "repository": {
