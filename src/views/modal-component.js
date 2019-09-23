@@ -2,6 +2,8 @@
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
+//import img files from /public/images/ directory 
+import comanyLogoImg from '../images/company-logo.png';
 
 export class ModalComponent {
     constructor(elemCollection) {
@@ -50,7 +52,7 @@ export class ModalComponent {
                 <div class="modal-header">
                 <div class="row">
                     <div id="company-logo-img" class=" logo-img text-center">
-                        <img src="/../../images/company-logo.png" class="rounded" alt="Company Logo">
+                        <img src="${comanyLogoImg}" class="rounded" alt="Company Logo">
                     </div> 
                 </div>
                 <div class="row">
