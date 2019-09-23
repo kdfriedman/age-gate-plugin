@@ -11,6 +11,7 @@ window.$ = $;
 class AppComponent {
     constructor(elemCollectionObject) {
         this.elemCollectionObject = elemCollectionObject;
+        this.test = 'test';
     }
 
     init() {

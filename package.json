@@ -1,10 +1,11 @@
 {
   "name": "age-gate-plugin",
+  "sideEffects": ["*.scss"],
   "version": "1.0.0",
   "main": "app.component.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "start": "webpack-dev-server --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
@@ -26,13 +27,14 @@
     "babel-loader": "^8.0.6",
     "compression-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.3",
-    "webpack-bundle-analyzer": "^3.5.0",
     "webpack-cli": "^3.3.8",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.2"
